@@ -1,8 +1,36 @@
-import React from "react";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import React, { useCallback } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  SectionList,
+  Text,
+  View,
+} from "react-native";
 import Thumbnail from "../Thumbnail";
-const col = 2;
-function MovieList({ movieList, loading, fetchMovieList }) {
+import { makeArraysUnique } from "../../utility";
+function MovieList({ loading, fetchMovieList, moviesByYear }) {
+  const uniqueobj = makeArraysUnique(moviesByYear);
+  const renderFlatListItem = useCallback(({ item }) => {
+    return (
+      <Thumbnail
+        imgUrl={item?.backdrop_path}
+        title={item?.title}
+        rating={item?.popularity}
+        releaseYear={item?.release_date}
+        id={item?.id}
+      />
+    );
+  }, []);
+  const renderFlatList = useCallback(({ section }) => {
+    return (
+      <FlatList
+        data={section.data}
+        numColumns={2}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderFlatListItem}
+      />
+    );
+  }, [uniqueobj,renderFlatListItem]);
   return (
     <View
       style={{
@@ -12,33 +40,35 @@ function MovieList({ movieList, loading, fetchMovieList }) {
         alignItems: "center",
       }}
     >
-      {movieList?.length > 0 ? (
-        <FlatList
-          data={movieList}
-          renderItem={({ item }) => (
-            <Thumbnail
-              imgUrl={item?.backdrop_path}
-              title={item?.title}
-              rating={item?.popularity}
-            />
-          )}
-          keyExtractor={(item) => item?.id}
-          numColumns={col}
-          onEndReached={fetchMovieList}
-          onEndReachedThreshold={0.1}
-          ListFooterComponent={
-            loading ? <ActivityIndicator size="large" /> : null
-          }
-        />
-      ) : (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text style={{ fontSize: 20, color: "#fff" }}>No Result Found</Text>
-        </View>
-      )}
+      <SectionList
+        sections={Object.keys(uniqueobj).map((year) => ({
+          year: parseInt(year),
+          data: moviesByYear[year],
+        }))}
+        renderSectionHeader={({ section: { year } }) => (
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 20,
+              marginVertical: 5,
+              marginHorizontal: 10,
+            }}
+          >
+            {year}
+          </Text>
+        )}
+        keyExtractor={(item) => item.id.toString()}
+        onEndReached={() => fetchMovieList(true)}
+        ListFooterComponent={
+          loading ? <ActivityIndicator size="large" /> : null
+        }
+        ListEmptyComponent={() => (
+          <Text style={{ color: "#fff" }}>No Results Found</Text>
+        )}
+        renderItem={renderFlatList}
+      />
     </View>
   );
 }
 
-export default MovieList;
+export default React.memo(MovieList);
