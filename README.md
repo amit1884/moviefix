@@ -35,7 +35,7 @@ If not want to install "Expo" app, install any android emulator, in the laptop, 
 
 For any issue:
 Follow this link to run on emulator or using usb debugging,
-   [text](https://reactnative.dev/docs/running-on-device)
+   [Connect android device using USB debugging or emulator ](https://reactnative.dev/docs/running-on-device)
 
 ### Note 2
 
