@@ -18,7 +18,6 @@ const Thumbnail = ({ data }) => {
       <View
         style={{ position: "absolute", top: 0, left: 10, overflow: "hidden" }}
       >
-        <Text style={{ color: "#fff" }}>{data?.id}</Text>
         <Text style={{ color: "#fff" }}>{data?.title}</Text>
         <Text style={{ color: "#fff" }}>{data?.popularity}</Text>
         <Text style={{ color: "#fff" }}>{data?.release_date}</Text>

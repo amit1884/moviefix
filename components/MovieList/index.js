@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -13,16 +13,36 @@ function MovieList({ loading, fetchMovieList, moviesByYear }) {
   const renderFlatListItem = useCallback(({ item }) => {
     return <Thumbnail data={item} />;
   }, []);
-  const renderFlatList = useCallback(({ section }) => {
+  const renderFlatList = useCallback(({ item }) => {
     return (
-      <FlatList
-        data={section.data}
-        numColumns={2}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderFlatListItem}
-      />
+      <>
+        <View>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 20,
+              marginVertical: 5,
+              marginHorizontal: 10,
+            }}
+          >
+            {item.year}
+          </Text>
+          <FlatList
+            data={item.data}
+            numColumns={2}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={renderFlatListItem}
+          />
+        </View>
+      </>
     );
   }, []);
+  const formatData = useCallback(() => {
+    return Object.keys(uniqueobj).map((year) => ({
+      year: parseInt(year),
+      data: moviesByYear[year],
+    }));
+  }, [uniqueobj]);
   return (
     <View
       style={{
@@ -32,24 +52,9 @@ function MovieList({ loading, fetchMovieList, moviesByYear }) {
         alignItems: "center",
       }}
     >
-      <SectionList
-        sections={Object.keys(uniqueobj).map((year) => ({
-          year: parseInt(year),
-          data: moviesByYear[year],
-        }))}
-        renderSectionHeader={({ section: { year } }) => (
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 20,
-              marginVertical: 5,
-              marginHorizontal: 10,
-            }}
-          >
-            {year}
-          </Text>
-        )}
-        keyExtractor={(item) => item.id.toString()}
+      <FlatList
+        data={formatData()}
+        renderItem={renderFlatList}
         onEndReached={() => fetchMovieList(true)}
         ListFooterComponent={
           loading ? <ActivityIndicator size="large" /> : null
@@ -57,7 +62,6 @@ function MovieList({ loading, fetchMovieList, moviesByYear }) {
         ListEmptyComponent={() => (
           <Text style={{ color: "#fff" }}>No Results Found</Text>
         )}
-        renderItem={renderFlatList}
       />
     </View>
   );
