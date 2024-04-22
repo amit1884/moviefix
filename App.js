@@ -10,6 +10,8 @@ import Header from "./components/Header";
 import MovieList from "./components/MovieList";
 import { useCallback, useEffect, useState } from "react";
 import { API_TOKEN, BASE_URL } from "./constants";
+import FloatingButton from "./components/Search/FloatingButton";
+import Search from "./components/Search";
 
 function App() {
   const [moviesByYear, setMoviesByYear] = useState([]);
@@ -20,6 +22,8 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
   const [selectedGeneres, setSelectedGenres] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [query, setQuery] = useState("");
+  const [open,setOpen]=useState(false)
   useEffect(() => {
     setReleaseYear(2012);
     setMoviesByYear({});
@@ -34,6 +38,10 @@ function App() {
       let genreList = selectedGeneres?.join(",");
       url = url + `&with_genres=${genreList}`;
     }
+    if (query) {
+      url = url + `&query=${query}`;
+    }
+    console.log(url);
     try {
       fetch(url, {
         method: "GET",
@@ -90,7 +98,7 @@ function App() {
     }));
   }, [moviesByYear]);
   const handleRefresh = async () => {
-    let data=formatData()
+    let data = formatData();
     setPage(1);
     setReleaseYear(data[0]?.year - 1);
     setMoviesByYear({});
@@ -128,6 +136,8 @@ function App() {
               { cancelable: false }
             )
           : null}
+      <FloatingButton openSearch={setOpen}/>
+      <Search open={open} setOpen={setOpen}/>
       </View>
     </SafeAreaView>
   );
@@ -137,5 +147,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    position: "relative",
   },
 });
