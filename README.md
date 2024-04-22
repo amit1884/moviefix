@@ -2,9 +2,10 @@
 
 ### About
 
-Moviefix is a native app built in react-native, it shows list of movies from an api on the basis of different filters, like release year, popularity, etc. 
+Moviefix is a native app built in react-native, it shows list of movies from an api on the basis of different filters, like release year, popularity, etc.
 
 ### Features:
+
 1. Built in react native.
 2. Data grouped by year.
 3. Supports infinite scroll in both direction i.e. scroll to top will fecth previuos year data and scrolling down will fetch the data of nect year if the data of current year ends.
@@ -19,18 +20,23 @@ Moviefix is a native app built in react-native, it shows list of movies from an 
 4. Open the project in VS code or in any editor.
 5. Open terminal, go to your project and run "npm install", to install all packages and dependencies.
 6. Connect your android phone and laptop to same network i.e with same wifi.
-7. Go to terminal and run "npm start",  to run the project.
+7. Go to terminal and run "npm start", to run the project.
 8. When it runs successfully, Open the "Expo" app in phone, and scan the QR code which is showing in the terminal.
 9. Let the build complete, app will open automatically.
 10. Try scrolling down and up, to get more data or try tapping on filters (genres).
 
-#### Note
+#### Note 1
 
-If not want to install "Expo" app, install any android emulator, in the laptop, start the emulator and when the server starts, press "a" to run the project in the emulator.
- or Follow this link to run on emulator or using usb debugging,
- [text](https://reactnative.dev/docs/running-on-device)
+If not want to install "Expo" app, install any android emulator, in the laptop, start the emulator and when the server starts, press "a" to run the project in the emulator. (android studio may be needed.)
 
+1. Start USB debugging in your android phone.
+2. Once connected the device, run command , "adb devices" , to verify, if it is showing th device name then you are good to go.
+3. Press "a" to run the project on your android device.
 
+For any issue:
+Follow this link to run on emulator or using usb debugging,
+   [text](https://reactnative.dev/docs/running-on-device)
 
+### Note 2
 
-
+Images not loading from the api, so used a static image for thumbnail.
