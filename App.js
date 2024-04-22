@@ -17,20 +17,24 @@ function App() {
   const [error, setError] = useState("");
   const [releaseYear, setReleaseYear] = useState(2012);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [selectedGeneres, setSelectedGenres] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     setReleaseYear(2012);
     setMoviesByYear({});
+    setPage(1);
     fetchMovieList();
   }, [selectedGeneres]);
 
-  const fetchMovieList = useCallback((isScrollFetch) => {
+  const fetchMovieList = (isScrollFetch) => {
     setLoading(true);
-    let url = `${BASE_URL}/3/discover/movie?api_key=${API_TOKEN}&sort_by=popularity.desc&primary_release_year=${releaseYear}&page=1&vote_count.gte=100`;
+    let url = `${BASE_URL}/3/discover/movie?api_key=${API_TOKEN}&sort_by=popularity.desc&primary_release_year=${releaseYear}&page=${page}&vote_count.gte=100`;
     if (selectedGeneres?.length > 0) {
       let genreList = selectedGeneres?.join(",");
       url = url + `&with_genres=${genreList}`;
     }
+    console.log('Year',releaseYear);
     try {
       fetch(url, {
         method: "GET",
@@ -46,8 +50,12 @@ function App() {
           setMoviesByYear({ ...moviesByYear, ...moviesGroupedByYear });
           setError("");
           setLoading(false);
-          if (isScrollFetch) {
+          setTotalPages(data?.total_pages);
+          if (isScrollFetch && page >= totalPages) {
             setReleaseYear((prevYear) => prevYear + 1);
+            setPage(1);
+          } else if (isScrollFetch) {
+            setPage((prevPage) => prevPage + 1);
           }
         })
         .catch((error) => {
@@ -58,7 +66,7 @@ function App() {
       console.error("There was a problem with the try block:", error);
       setLoading(false);
     }
-  },[releaseYear,selectedGeneres]);
+  };
 
   const groupMoviesByYear = (movies) => {
     const moviesGroupedByYear = {};
@@ -76,6 +84,15 @@ function App() {
     });
     return moviesGroupedByYear;
   };
+  const handleRefresh = async () => {
+    setPage(1);
+    setReleaseYear((prevYear) => prevYear - 1);
+    setMoviesByYear({});
+    setTotalPages(0);
+    setRefreshing(true);
+    fetchMovieList();
+    setRefreshing(false);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar />
@@ -89,6 +106,8 @@ function App() {
           loading={loading}
           fetchMovieList={fetchMovieList}
           moviesByYear={moviesByYear}
+          handleRefresh={handleRefresh}
+          refreshing={refreshing}
         />
         {error
           ? Alert.alert(

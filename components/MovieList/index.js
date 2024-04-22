@@ -2,14 +2,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  RefreshControl,
   SectionList,
   Text,
   View,
 } from "react-native";
 import Thumbnail from "../Thumbnail";
-import { makeArraysUnique } from "../../utility";
-function MovieList({ loading, fetchMovieList, moviesByYear }) {
-  const uniqueobj = makeArraysUnique(moviesByYear);
+function MovieList({ loading, fetchMovieList, moviesByYear,handleRefresh,refreshing }) {
   const renderFlatListItem = useCallback(({ item }) => {
     return <Thumbnail data={item} />;
   }, []);
@@ -38,11 +37,11 @@ function MovieList({ loading, fetchMovieList, moviesByYear }) {
     );
   }, []);
   const formatData = useCallback(() => {
-    return Object.keys(uniqueobj).map((year) => ({
+    return Object.keys(moviesByYear).map((year) => ({
       year: parseInt(year),
       data: moviesByYear[year],
     }));
-  }, [uniqueobj]);
+  }, [moviesByYear]);
   return (
     <View
       style={{
@@ -62,6 +61,13 @@ function MovieList({ loading, fetchMovieList, moviesByYear }) {
         ListEmptyComponent={() => (
           <Text style={{ color: "#fff" }}>No Results Found</Text>
         )}
+        onEndReachedThreshold={0.1}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+          />
+        }
       />
     </View>
   );
