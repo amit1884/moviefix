@@ -24,9 +24,16 @@ function Search({ open, setOpen }) {
   useEffect(() => {
     fetchMovies();
   }, [query]);
+  useEffect(() => {
+    setQuery("");
+    setError("");
+    setLoading(false);
+    setMovies([]);
+  }, []);
   const fetchMovies = useCallback(() => {
-    setLoading(true);
     try {
+      setLoading(true);
+
       fetch(
         `${BASE_URL}/3/search/movie?query=${query}&page=${page}&api_key=${API_TOKEN}`,
         {
@@ -62,6 +69,7 @@ function Search({ open, setOpen }) {
       visible={open}
       onRequestClose={() => setOpen(false)}
       presentationStyle="bottomsheet"
+      animationType="slide"
     >
       <View style={{ backgroundColor: "#121212", flex: 1 }}>
         <TextInput
