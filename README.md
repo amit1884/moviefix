@@ -9,10 +9,7 @@ Moviefix is a native app built in react-native, it shows list of movies from an 
 2. Data grouped by year.
 3. Supports infinite scroll in both direction i.e. scroll to top will fecth previuos year data and scrolling down will fetch the data of nect year if the data of current year ends.
 4. Supports filter based on genres (supports AND and not OR), one can select multiple genres at a time.
-
-### Feature Not included
-
-1. Search bar to search movies 
+5. Search a movie by typing movie name.
 
 ### How to Run in local ?
 
