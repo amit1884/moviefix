@@ -16,11 +16,10 @@ const Thumbnail = ({ data }) => {
         style={{ flex: 1 }}
       />
       <View
-        style={{ position: "absolute", top: 0, left: 10, overflow: "hidden" }}
+        style={{ position: "absolute", bottom: 0, left: 10, overflow: "hidden" }}
       >
-        <Text style={{ color: "#fff" }}>{data?.title}</Text>
+        <Text style={{ color: "#fff",fontSize:16 }}>{data?.title}</Text>
         <Text style={{ color: "#fff" }}>{data?.popularity}</Text>
-        <Text style={{ color: "#fff" }}>{data?.release_date}</Text>
       </View>
     </View>
   );

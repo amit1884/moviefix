@@ -34,7 +34,6 @@ function App() {
       let genreList = selectedGeneres?.join(",");
       url = url + `&with_genres=${genreList}`;
     }
-    console.log('Year',releaseYear);
     try {
       fetch(url, {
         method: "GET",
