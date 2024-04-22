@@ -40,3 +40,8 @@ Follow this link to run on emulator or using usb debugging,
 ### Note 2
 
 Images not loading from the api, so used a static image for thumbnail.
+
+## ScreenShots
+
+![Home Screen](./assets/home.jpeg)
+![Home Screen](./assets/search.jpeg)
