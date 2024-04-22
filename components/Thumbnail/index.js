@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 
-const Thumbnail = ({ id, imgUrl, title, rating, releaseYear }) => {
+const Thumbnail = ({ data }) => {
   return (
     <View
       style={{
@@ -18,10 +18,10 @@ const Thumbnail = ({ id, imgUrl, title, rating, releaseYear }) => {
       <View
         style={{ position: "absolute", top: 0, left: 10, overflow: "hidden" }}
       >
-        <Text style={{ color: "#fff" }}>{id}</Text>
-        <Text style={{ color: "#fff" }}>{title}</Text>
-        <Text style={{ color: "#fff" }}>{rating}</Text>
-        <Text style={{ color: "#fff" }}>{releaseYear}</Text>
+        <Text style={{ color: "#fff" }}>{data?.id}</Text>
+        <Text style={{ color: "#fff" }}>{data?.title}</Text>
+        <Text style={{ color: "#fff" }}>{data?.popularity}</Text>
+        <Text style={{ color: "#fff" }}>{data?.release_date}</Text>
       </View>
     </View>
   );

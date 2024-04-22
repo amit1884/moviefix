@@ -11,15 +11,7 @@ import { makeArraysUnique } from "../../utility";
 function MovieList({ loading, fetchMovieList, moviesByYear }) {
   const uniqueobj = makeArraysUnique(moviesByYear);
   const renderFlatListItem = useCallback(({ item }) => {
-    return (
-      <Thumbnail
-        imgUrl={item?.backdrop_path}
-        title={item?.title}
-        rating={item?.popularity}
-        releaseYear={item?.release_date}
-        id={item?.id}
-      />
-    );
+    return <Thumbnail data={item} />;
   }, []);
   const renderFlatList = useCallback(({ section }) => {
     return (
@@ -30,7 +22,7 @@ function MovieList({ loading, fetchMovieList, moviesByYear }) {
         renderItem={renderFlatListItem}
       />
     );
-  }, [uniqueobj,renderFlatListItem]);
+  }, []);
   return (
     <View
       style={{

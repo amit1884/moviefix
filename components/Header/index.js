@@ -4,8 +4,6 @@ import Filters from "../Filters";
 
 function Header({
   fetchMovies,
-  query,
-  setQuery,
   selectedGeneres,
   setSelectedGenres,
 }) {
@@ -17,8 +15,6 @@ function Header({
       <View style={styles.filterContainer}>
         <Filters
           fetchMovies={fetchMovies}
-          query={query}
-          setQuery={setQuery}
           selectedGeneres={selectedGeneres}
           setSelectedGenres={setSelectedGenres}
         />

@@ -10,31 +10,26 @@ import Header from "./components/Header";
 import MovieList from "./components/MovieList";
 import { useCallback, useEffect, useState } from "react";
 import { API_TOKEN, BASE_URL } from "./constants";
-import { makeArraysUnique } from "./utility";
 
-export default function App() {
+function App() {
   const [moviesByYear, setMoviesByYear] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [releaseYear, setReleaseYear] = useState(2012);
   const [page, setPage] = useState(1);
-  const [query, setQuery] = useState("");
   const [selectedGeneres, setSelectedGenres] = useState([]);
   useEffect(() => {
     setReleaseYear(2012);
     setMoviesByYear({});
     fetchMovieList();
-  }, [query, selectedGeneres]);
+  }, [selectedGeneres]);
 
-  const fetchMovieList = (isScrollFetch) => {
+  const fetchMovieList = useCallback((isScrollFetch) => {
     setLoading(true);
     let url = `${BASE_URL}/3/discover/movie?api_key=${API_TOKEN}&sort_by=popularity.desc&primary_release_year=${releaseYear}&page=1&vote_count.gte=100`;
     if (selectedGeneres?.length > 0) {
       let genreList = selectedGeneres?.join(",");
       url = url + `&with_genres=${genreList}`;
-    }
-    if (query) {
-      url = url + `&with_keywords=${query}`;
     }
     try {
       fetch(url, {
@@ -53,7 +48,6 @@ export default function App() {
           setLoading(false);
           if (isScrollFetch) {
             setReleaseYear((prevYear) => prevYear + 1);
-            setPage(1);
           }
         })
         .catch((error) => {
@@ -64,7 +58,7 @@ export default function App() {
       console.error("There was a problem with the try block:", error);
       setLoading(false);
     }
-  };
+  },[releaseYear,selectedGeneres]);
 
   const groupMoviesByYear = (movies) => {
     const moviesGroupedByYear = {};
@@ -88,8 +82,6 @@ export default function App() {
       <View style={{ flex: 1 }}>
         <Header
           fetchMovies={fetchMovieList}
-          query={query}
-          setQuery={setQuery}
           selectedGeneres={selectedGeneres}
           setSelectedGenres={setSelectedGenres}
         />
@@ -115,7 +107,7 @@ export default function App() {
     </SafeAreaView>
   );
 }
-
+export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

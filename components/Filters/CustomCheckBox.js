@@ -9,16 +9,18 @@ function CustomCheckBox({
   selectedGeneres,
   setSelectedGenres,
 }) {
-  const handleOnPress =async (value) => {
-  
+  const handleOnPress = async (value) => {
     onSelect && onSelect(value);
+  };
+  const checkIfAllSelected = () => {
+    return selectedGeneres?.length === 0;
   };
   return (
     <Pressable
       onPress={() => handleOnPress(value)}
       style={[
         styles.default,
-        selectedGeneres.includes(value)
+        selectedGeneres.includes(value) || (checkIfAllSelected() && value === 0)
           ? styles.activeContainer
           : styles.inActiveContainer,
       ]}

@@ -3,7 +3,7 @@ import { Alert, FlatList, StyleSheet, View } from "react-native";
 import CustomCheckBox from "./CustomCheckBox";
 import { API_TOKEN, BASE_URL } from "../../constants";
 
-function GenreList({ fetchMovies,selectedGeneres,setSelectedGenres }) {
+function GenreList({ fetchMovies, selectedGeneres, setSelectedGenres }) {
   const [genres, setGenres] = useState([{ id: 0, name: "All" }]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -24,7 +24,7 @@ function GenreList({ fetchMovies,selectedGeneres,setSelectedGenres }) {
           return response.json();
         })
         .then((data) => {
-          setGenres(data?.genres);
+          setGenres([{ id: 0, name: "All" }, ...data?.genres]);
           setError("");
           setLoading(false);
         })
@@ -38,7 +38,9 @@ function GenreList({ fetchMovies,selectedGeneres,setSelectedGenres }) {
     }
   };
   const onGenreSelect = (value) => {
-    if (selectedGeneres.includes(value)) {
+    if (value == 0) {
+      setSelectedGenres([]);
+    } else if (selectedGeneres.includes(value)) {
       setSelectedGenres((prevGenres) =>
         prevGenres.filter((genre) => genre !== value)
       );
