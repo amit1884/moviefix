@@ -2,7 +2,7 @@
 
 ### About
 
-Moviefix is a native app built in react native, it shows list of movies from and api on the basis of different filters, like release year, popularity, etc. 
+Moviefix is a native app built in react-native, it shows list of movies from an api on the basis of different filters, like release year, popularity, etc. 
 
 ### Features:
 1. Built in react native.
@@ -12,7 +12,7 @@ Moviefix is a native app built in react native, it shows list of movies from and
 
 ### Feature Not included
 
-1. Search bar to searc movies 
+1. Search bar to search movies 
 
 ### How to Run in local ?
 

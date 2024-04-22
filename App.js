@@ -83,9 +83,16 @@ function App() {
     });
     return moviesGroupedByYear;
   };
+  const formatData = useCallback(() => {
+    return Object.keys(moviesByYear).map((year) => ({
+      year: parseInt(year),
+      data: moviesByYear[year],
+    }));
+  }, [moviesByYear]);
   const handleRefresh = async () => {
+    let data=formatData()
     setPage(1);
-    setReleaseYear((prevYear) => prevYear - 1);
+    setReleaseYear(data[0]?.year - 1);
     setMoviesByYear({});
     setTotalPages(0);
     setRefreshing(true);
